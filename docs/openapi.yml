@@ -1,0 +1,27 @@
+openapi: 3.0.0
+info:
+  title: API spec
+  description: API spec
+  version: 0.1.0
+paths:
+  /api/v1/persons:
+    get:
+      summary: List all persons
+      responses:
+        200:
+          description: Response successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Person'
+components:
+  schemas:
+    Person:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string

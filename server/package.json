@@ -1,0 +1,48 @@
+{
+  "name": "sample-backend",
+  "version": "0.1.0",
+  "description": "sample backend",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "dev": "nodemon src",
+    "debug": "node --inspect src",
+    "test": "NODE_ENV=staging jest --watch",
+    "test:once": "NODE_ENV=staging jest",
+    "test:coverage": "yarn test:once --coverage",
+    "test:coverage:browse": "yarn test:coverage; open coverage/lcov-report/index.html",
+    "test:full": "yarn test:coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rwalle61/nodeReactStarterApp.git"
+  },
+  "author": "rwalle61",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com:rwalle61/nodeReactStarterApp/issues"
+  },
+  "homepage": "https://github.com:rwalle61/nodeReactStarterApp#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.7",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1",
+    "jest": "^26.1.0",
+    "jest-openapi": "^0.9.4",
+    "nodemon": "^2.0.2",
+    "supertest": "^4.0.2",
+    "ts-node": "^8.10.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "express-openapi-validate": "^0.5.0",
+    "fs-extra": "^8.1.0",
+    "http": "0.0.0",
+    "js-yaml": "^3.13.1",
+    "log4js": "^6.1.2",
+    "path": "^0.12.7"
+  }
+}

@@ -1,0 +1,67 @@
+parser: '@typescript-eslint/parser'
+
+extends:
+  - airbnb
+  - eslint:recommended
+  - plugin:import/errors
+  - plugin:import/warnings
+  - plugin:cypress/recommended
+  - plugin:testing-library/recommended
+  - plugin:jest-dom/recommended
+  - plugin:@typescript-eslint/recommended
+  - prettier # must go last, to turn off some previous rules
+
+plugins:
+  - '@typescript-eslint'
+  - prefer-arrow
+  - jest
+  - jest-dom
+  - testing-library
+  - cypress
+
+settings:
+  import/resolver:
+    typescript: {}
+  react:
+    version: latest
+
+env:
+  node: true
+  browser: true
+  jest: true
+
+parserOptions:
+  ecmaVersion: 2020
+  sourceType: module
+
+rules:
+  require-await: error
+  prefer-arrow-callback: error
+  prefer-arrow/prefer-arrow-functions: error
+  import/prefer-default-export: off
+  import/no-extraneous-dependencies:
+    - error
+    - devDependencies:
+        - '**/*.test.tsx'
+        - '**/*.spec.tsx'
+        - '**/*test*'
+        - '**/cypress/**'
+  import/extensions: off
+  react/forbid-prop-types: off
+  react/react-in-jsx-scope: off
+  react/prop-types: off
+  react/jsx-filename-extension: off
+  react/jsx-props-no-spreading: off
+  '@typescript-eslint/no-unused-vars':
+    - error
+    - ignoreRestSiblings: true
+      argsIgnorePattern: next
+  '@typescript-eslint/ban-types': off
+
+overrides:
+  - files: [cypress/**/*.test.js]
+    rules:
+      'testing-library/await-async-query': off
+  - files: [server/**/*.ts]
+    rules:
+      '@typescript-eslint/no-var-requires': off
