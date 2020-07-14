@@ -1,7 +1,25 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 
-let App = (): JSX.Element => {
-  return <div>Hello World</div>;
-};
+const App = (): JSX.Element => (
+  <div>
+    <h1>Check In</h1>
+    <h2>My mood:</h2>
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+    <div>6</div>
+    <div>7</div>
+    <h2>I'm feeling:</h2>
+    <div>depressed</div>
+    <div>optimistic</div>
+    <div>bored</div>
+    <div>happy</div>
+    <h2>Comment:</h2>
+    <Button>Submit</Button>
+  </div>
+);
 
 export default App;

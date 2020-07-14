@@ -1,4 +1,4 @@
-describe('e2e tests - as a user', () => {
+describe.skip('e2e tests - as a user', () => {
   beforeEach(() => {
     cy.visit('/');
   });
