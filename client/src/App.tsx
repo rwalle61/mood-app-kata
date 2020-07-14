@@ -19,6 +19,9 @@ const App = (): JSX.Element => (
     <div>happy</div>
     <h2>Comment:</h2>
     <Button>Submit</Button>
+    <h1>Mood Insights</h1>
+    <h2>Average mood</h2>
+    <h2>0 check-ins</h2>
   </div>
 );
 

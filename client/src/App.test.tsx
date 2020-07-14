@@ -33,5 +33,10 @@ describe('App - as a user', () => {
     test('I see a button to check in my mood', () => {
       expect(screen.getByText('Submit').closest('button')).toBeInTheDocument();
     });
+    test('I can see the Mood insights information', () => {
+      expect(screen.getByText('Mood Insights')).toBeInTheDocument();
+      expect(screen.getByText('Average mood')).toBeInTheDocument();
+      expect(screen.getByText('0 check-ins')).toBeInTheDocument();
+    });
   });
 });
