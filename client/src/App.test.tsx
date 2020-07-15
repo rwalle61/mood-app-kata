@@ -23,11 +23,19 @@ describe('App - as a user', () => {
       expect(within(moodSelector!).getByText('7')).toBeInTheDocument();
     });
     test("I can select how I'm feeling", () => {
-      expect(screen.getByText("I'm feeling:")).toBeInTheDocument();
-      expect(screen.getByText('depressed')).toBeInTheDocument();
-      expect(screen.getByText('optimistic')).toBeInTheDocument();
-      expect(screen.getByText('bored')).toBeInTheDocument();
-      expect(screen.getByText('happy')).toBeInTheDocument();
+      const feelingSelector = screen.getByText("I'm feeling:").parentElement;
+      expect(feelingSelector).toBeInTheDocument();
+      expect(
+        within(feelingSelector!).getByText("I'm feeling:"),
+      ).toBeInTheDocument();
+      expect(
+        within(feelingSelector!).getByText('depressed'),
+      ).toBeInTheDocument();
+      expect(
+        within(feelingSelector!).getByText('optimistic'),
+      ).toBeInTheDocument();
+      expect(within(feelingSelector!).getByText('bored')).toBeInTheDocument();
+      expect(within(feelingSelector!).getByText('happy')).toBeInTheDocument();
     });
     test('I can write a comment', () => {
       expect(screen.getByText('Comment:')).toBeInTheDocument();
@@ -58,20 +66,26 @@ describe('App - as a user', () => {
       expect(screen.getByText('Average mood: 4')).toBeInTheDocument();
     });
     test('I see the check-in I submitted', () => {
+      const checkinDate = Date();
+
       const moodSelector = screen.getByText('My mood:').parentElement;
       const mood4Button = within(moodSelector!).getByText('4');
       userEvent.click(mood4Button);
+      const feelingSelector = screen.getByText("I'm feeling:").parentElement;
+      const feelingHappyButton = within(feelingSelector!).getByText('happy');
+      userEvent.click(feelingHappyButton);
       const checkInButton = screen.getByText('Submit');
       userEvent.click(checkInButton);
 
       const [head, ...rows] = screen.getAllByRole('row');
       expect(within(head).getByText('Date')).toBeInTheDocument();
-      expect(within(head).getByText('Time')).toBeInTheDocument();
       expect(within(head).getByText('Mood')).toBeInTheDocument();
       expect(within(head).getByText('Feeling')).toBeInTheDocument();
       expect(within(head).getByText('Comment')).toBeInTheDocument();
 
+      expect(within(rows[0]).getByText(checkinDate)).toBeInTheDocument();
       expect(within(rows[0]).getByText('4')).toBeInTheDocument();
+      expect(within(rows[0]).getByText('happy')).toBeInTheDocument();
     });
   });
 });

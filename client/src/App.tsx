@@ -3,11 +3,12 @@ import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 
 const App = (): JSX.Element => {
-  const [checkIns, setCheckIns] = useState(0);
+  const [checkIns, setCheckIns] = useState<{ date: string }[]>([]);
   const [averageMood, setAverageMood] = useState(0);
 
   const onCheckIn = () => {
-    setCheckIns(checkIns + 1);
+    const newCheckIns = [{ date: Date() }];
+    setCheckIns(newCheckIns);
   };
 
   return (
@@ -45,12 +46,11 @@ const App = (): JSX.Element => {
       <div>
         <h1>Mood Insights</h1>
         <h2>{`Average mood${averageMood ? `: ${averageMood}` : ''}`}</h2>
-        <h2>{`${checkIns} check-ins`}</h2>
+        <h2>{`${checkIns.length} check-ins`}</h2>
         <Table striped bordered hover>
           <thead>
             <tr>
               <th>Date</th>
-              <th>Time</th>
               <th>Mood</th>
               <th>Feeling</th>
               <th>Comment</th>
@@ -58,10 +58,9 @@ const App = (): JSX.Element => {
           </thead>
           <tbody>
             <tr>
-              <td>1</td>
-              <td>1</td>
+              <td>{checkIns.length && checkIns[0].date}</td>
               <td>4</td>
-              <td>Otto</td>
+              <td>happy</td>
               <td>@mdo</td>
             </tr>
           </tbody>
