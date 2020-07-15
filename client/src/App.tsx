@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
 
 const App = (): JSX.Element => {
   const [checkIns, setCheckIns] = useState<{ date: string }[]>([]);
@@ -39,7 +41,12 @@ const App = (): JSX.Element => {
           <div>happy</div>
         </div>
         <div>
-          <h2>Comment:</h2>
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text>Optional comment</InputGroup.Text>
+            </InputGroup.Prepend>
+            <FormControl as='textarea' aria-label='With textarea' />
+          </InputGroup>
         </div>
         <Button onClick={onCheckIn}>Submit</Button>
       </div>
@@ -61,7 +68,7 @@ const App = (): JSX.Element => {
               <td>{checkIns.length && checkIns[0].date}</td>
               <td>4</td>
               <td>happy</td>
-              <td>@mdo</td>
+              <td>Yay</td>
             </tr>
           </tbody>
         </Table>

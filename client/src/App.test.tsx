@@ -38,7 +38,10 @@ describe('App - as a user', () => {
       expect(within(feelingSelector!).getByText('happy')).toBeInTheDocument();
     });
     test('I can write a comment', () => {
-      expect(screen.getByText('Comment:')).toBeInTheDocument();
+      expect(screen.getByText('Optional comment')).toBeInTheDocument();
+      const commentSection = screen.getByText('Optional comment').parentElement!
+        .parentElement;
+      expect(within(commentSection!).getByRole('textbox')).toBeInTheDocument();
     });
     test('I see a button to check in my mood', () => {
       expect(screen.getByText('Submit').closest('button')).toBeInTheDocument();
@@ -74,6 +77,10 @@ describe('App - as a user', () => {
       const feelingSelector = screen.getByText("I'm feeling:").parentElement;
       const feelingHappyButton = within(feelingSelector!).getByText('happy');
       userEvent.click(feelingHappyButton);
+      const commentSection = screen.getByText('Optional comment').parentElement!
+        .parentElement;
+      const textBox = within(commentSection!).getByRole('textbox');
+      userEvent.type(textBox, 'Yay');
       const checkInButton = screen.getByText('Submit');
       userEvent.click(checkInButton);
 
@@ -86,6 +93,7 @@ describe('App - as a user', () => {
       expect(within(rows[0]).getByText(checkinDate)).toBeInTheDocument();
       expect(within(rows[0]).getByText('4')).toBeInTheDocument();
       expect(within(rows[0]).getByText('happy')).toBeInTheDocument();
+      expect(within(rows[0]).getByText('Yay')).toBeInTheDocument();
     });
   });
 });
