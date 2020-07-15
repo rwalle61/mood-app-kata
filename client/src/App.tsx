@@ -9,7 +9,7 @@ const App = (): JSX.Element => {
   const [averageMood, setAverageMood] = useState(0);
 
   const onCheckIn = () => {
-    const newCheckIns = [{ date: Date() }];
+    const newCheckIns = [...checkIns, { date: Date() }];
     setCheckIns(newCheckIns);
   };
 

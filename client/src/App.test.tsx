@@ -96,4 +96,80 @@ describe('App - as a user', () => {
       expect(within(rows[0]).getByText('Yay')).toBeInTheDocument();
     });
   });
+  describe('when I check in my mood twice', () => {
+    test('I see the check-ins count increase twice', () => {
+      const checkInButton = screen.getByText('Submit');
+      userEvent.click(checkInButton);
+      userEvent.click(checkInButton);
+
+      expect(screen.getByText('2 check-ins')).toBeInTheDocument();
+    });
+    test.skip('I see my average mood matches what I submitted those 2 times', () => {
+      const moodSelector = screen.getByText('My mood:').parentElement;
+      const checkInButton = screen.getByText('Submit');
+      const mood2Button = within(moodSelector!).getByText('2');
+      const mood4Button = within(moodSelector!).getByText('4');
+
+      userEvent.click(mood2Button);
+      userEvent.click(checkInButton);
+      userEvent.click(mood4Button);
+      userEvent.click(checkInButton);
+
+      expect(screen.getByText('Average mood: 3')).toBeInTheDocument();
+    });
+    test.skip('I see the first check-in I submitted', () => {
+      const checkinDate = Date();
+
+      const moodSelector = screen.getByText('My mood:').parentElement;
+      const mood4Button = within(moodSelector!).getByText('4');
+      userEvent.click(mood4Button);
+      const feelingSelector = screen.getByText("I'm feeling:").parentElement;
+      const feelingHappyButton = within(feelingSelector!).getByText('happy');
+      userEvent.click(feelingHappyButton);
+      const commentSection = screen.getByText('Optional comment').parentElement!
+        .parentElement;
+      const textBox = within(commentSection!).getByRole('textbox');
+      userEvent.type(textBox, 'Yay');
+      const checkInButton = screen.getByText('Submit');
+      userEvent.click(checkInButton);
+
+      const [head, ...rows] = screen.getAllByRole('row');
+      expect(within(head).getByText('Date')).toBeInTheDocument();
+      expect(within(head).getByText('Mood')).toBeInTheDocument();
+      expect(within(head).getByText('Feeling')).toBeInTheDocument();
+      expect(within(head).getByText('Comment')).toBeInTheDocument();
+
+      expect(within(rows[0]).getByText(checkinDate)).toBeInTheDocument();
+      expect(within(rows[0]).getByText('4')).toBeInTheDocument();
+      expect(within(rows[0]).getByText('happy')).toBeInTheDocument();
+      expect(within(rows[0]).getByText('Yay')).toBeInTheDocument();
+    });
+    test.skip('I see the 2nd check-in I submitted', () => {
+      const checkinDate = Date();
+
+      const moodSelector = screen.getByText('My mood:').parentElement;
+      const mood4Button = within(moodSelector!).getByText('4');
+      userEvent.click(mood4Button);
+      const feelingSelector = screen.getByText("I'm feeling:").parentElement;
+      const feelingHappyButton = within(feelingSelector!).getByText('happy');
+      userEvent.click(feelingHappyButton);
+      const commentSection = screen.getByText('Optional comment').parentElement!
+        .parentElement;
+      const textBox = within(commentSection!).getByRole('textbox');
+      userEvent.type(textBox, 'Yay');
+      const checkInButton = screen.getByText('Submit');
+      userEvent.click(checkInButton);
+
+      const [head, ...rows] = screen.getAllByRole('row');
+      expect(within(head).getByText('Date')).toBeInTheDocument();
+      expect(within(head).getByText('Mood')).toBeInTheDocument();
+      expect(within(head).getByText('Feeling')).toBeInTheDocument();
+      expect(within(head).getByText('Comment')).toBeInTheDocument();
+
+      expect(within(rows[0]).getByText(checkinDate)).toBeInTheDocument();
+      expect(within(rows[0]).getByText('4')).toBeInTheDocument();
+      expect(within(rows[0]).getByText('happy')).toBeInTheDocument();
+      expect(within(rows[0]).getByText('Yay')).toBeInTheDocument();
+    });
+  });
 });
