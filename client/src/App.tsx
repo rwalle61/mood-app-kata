@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { uuid } from 'uuidv4';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -18,7 +19,16 @@ interface CheckIn {
 
 const sumArray = (array: number[]) =>
   array.reduce((subTotal, element) => subTotal + element);
+
 const averageArray = (array: number[]) => sumArray(array) / array.length;
+
+const deepClone = (array: any[]) => JSON.parse(JSON.stringify(array));
+
+const reverseArray = (array: any[]) => {
+  const arrayClone = deepClone(array);
+  arrayClone.reverse();
+  return arrayClone;
+};
 
 const getAverageMood = (checkIns: CheckIn[]) => {
   const moods = checkIns.map(({ mood }) => mood);
@@ -86,12 +96,14 @@ const App = (): JSX.Element => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>{checkIns.length && checkIns[0].date}</td>
-              <td>4</td>
-              <td>happy</td>
-              <td>Yay</td>
-            </tr>
+            {reverseArray(checkIns).map((checkIn: CheckIn) => (
+              <tr key={uuid()}>
+                <td>{checkIn.date}</td>
+                <td>{checkIn.mood}</td>
+                <td>happy</td>
+                <td>Yay</td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       </div>

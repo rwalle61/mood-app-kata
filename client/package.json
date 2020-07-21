@@ -10,7 +10,8 @@
     "react": "^16.13.0",
     "react-bootstrap": "^1.2.2",
     "react-dom": "^16.13.0",
-    "react-scripts": "3.4.0"
+    "react-scripts": "3.4.0",
+    "uuidv4": "^6.2.0"
   },
   "scripts": {
     "start": "BROWSER=none react-scripts start",

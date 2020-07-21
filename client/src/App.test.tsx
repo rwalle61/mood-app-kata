@@ -117,12 +117,9 @@ describe('App - as a user', () => {
 
       expect(screen.getByText(`${labels.AVE_MOOD}: 3`)).toBeInTheDocument();
     });
-    test.skip('I see the first check-in I submitted', () => {
+    test('I see the 2 check-ins I submit, ordered by most recent date', () => {
       const checkinDate = Date();
 
-      const moodSelector = screen.getByText(labels.MOOD).parentElement;
-      const mood4Button = within(moodSelector!).getByText('4');
-      userEvent.click(mood4Button);
       const feelingSelector = screen.getByText(labels.FEELING).parentElement;
       const feelingHappyButton = within(feelingSelector!).getByText('happy');
       userEvent.click(feelingHappyButton);
@@ -133,31 +130,12 @@ describe('App - as a user', () => {
       const checkInButton = screen.getByText(labels.SUBMIT);
       userEvent.click(checkInButton);
 
-      const [head, ...rows] = screen.getAllByRole('row');
-      expect(within(head).getByText('Date')).toBeInTheDocument();
-      expect(within(head).getByText('Mood')).toBeInTheDocument();
-      expect(within(head).getByText('Feeling')).toBeInTheDocument();
-      expect(within(head).getByText('Comment')).toBeInTheDocument();
-
-      expect(within(rows[0]).getByText(checkinDate)).toBeInTheDocument();
-      expect(within(rows[0]).getByText('4')).toBeInTheDocument();
-      expect(within(rows[0]).getByText('happy')).toBeInTheDocument();
-      expect(within(rows[0]).getByText('Yay')).toBeInTheDocument();
-    });
-    test.skip('I see the 2nd check-in I submitted', () => {
-      const checkinDate = Date();
-
-      const moodSelector = screen.getByText(labels.MOOD).parentElement;
-      const mood4Button = within(moodSelector!).getByText('4');
-      userEvent.click(mood4Button);
-      const feelingSelector = screen.getByText(labels.FEELING).parentElement;
-      const feelingHappyButton = within(feelingSelector!).getByText('happy');
+      const checkinDate2 = Date();
       userEvent.click(feelingHappyButton);
-      const commentSection = screen.getByText(labels.COMMENT).parentElement!
-        .parentElement;
-      const textBox = within(commentSection!).getByRole('textbox');
+      const moodSelector = screen.getByText(labels.MOOD).parentElement;
+      const slider = within(moodSelector!).getByRole('slider');
+      fireEvent.change(slider, { target: { value: '2' } });
       userEvent.type(textBox, 'Yay');
-      const checkInButton = screen.getByText(labels.SUBMIT);
       userEvent.click(checkInButton);
 
       const [head, ...rows] = screen.getAllByRole('row');
@@ -166,10 +144,15 @@ describe('App - as a user', () => {
       expect(within(head).getByText('Feeling')).toBeInTheDocument();
       expect(within(head).getByText('Comment')).toBeInTheDocument();
 
-      expect(within(rows[0]).getByText(checkinDate)).toBeInTheDocument();
-      expect(within(rows[0]).getByText('4')).toBeInTheDocument();
+      expect(within(rows[0]).getByText(checkinDate2)).toBeInTheDocument();
+      expect(within(rows[0]).getByText('2')).toBeInTheDocument();
       expect(within(rows[0]).getByText('happy')).toBeInTheDocument();
       expect(within(rows[0]).getByText('Yay')).toBeInTheDocument();
+
+      expect(within(rows[1]).getByText(checkinDate)).toBeInTheDocument();
+      expect(within(rows[1]).getByText('4')).toBeInTheDocument();
+      expect(within(rows[1]).getByText('happy')).toBeInTheDocument();
+      expect(within(rows[1]).getByText('Yay')).toBeInTheDocument();
     });
   });
 });
