@@ -3,14 +3,37 @@ import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
+import Form from 'react-bootstrap/Form';
+
+const moods = {
+  MIN: 1,
+  MID: 4,
+  MAX: 7,
+};
+
+interface CheckIn {
+  date: string;
+  mood: number;
+}
+
+const sumArray = (array: number[]) =>
+  array.reduce((subTotal, element) => subTotal + element);
+const averageArray = (array: number[]) => sumArray(array) / array.length;
+
+const getAverageMood = (checkIns: CheckIn[]) => {
+  const moods = checkIns.map(({ mood }) => mood);
+  return averageArray(moods);
+};
 
 const App = (): JSX.Element => {
-  const [checkIns, setCheckIns] = useState<{ date: string }[]>([]);
+  const [checkIns, setCheckIns] = useState<CheckIn[]>([]);
+  const [selectedMood, setSelectedMood] = useState(moods.MID);
   const [averageMood, setAverageMood] = useState(0);
 
   const onCheckIn = () => {
-    const newCheckIns = [...checkIns, { date: Date() }];
+    const newCheckIns = [...checkIns, { date: Date(), mood: selectedMood }];
     setCheckIns(newCheckIns);
+    setAverageMood(getAverageMood(newCheckIns));
   };
 
   return (
@@ -18,20 +41,19 @@ const App = (): JSX.Element => {
       <div>
         <h1>Check In</h1>
         <div>
-          <h2>My mood:</h2>
-          <div>1</div>
-          <div>2</div>
-          <div>3</div>
-          <div
-            onClick={() => {
-              setAverageMood(4);
-            }}
-          >
-            4
-          </div>
-          <div>5</div>
-          <div>6</div>
-          <div>7</div>
+          <Form>
+            <Form.Group controlId='formBasicRange'>
+              <Form.Label>My mood</Form.Label>
+              <Form.Control
+                type='range'
+                min={1}
+                max={7}
+                onChange={(e) => {
+                  setSelectedMood(parseInt(e.target.value, 10));
+                }}
+              />
+            </Form.Group>
+          </Form>
         </div>
         <div>
           <h2>I'm feeling:</h2>
@@ -43,7 +65,7 @@ const App = (): JSX.Element => {
         <div>
           <InputGroup>
             <InputGroup.Prepend>
-              <InputGroup.Text>Optional comment</InputGroup.Text>
+              <InputGroup.Text>Comment?</InputGroup.Text>
             </InputGroup.Prepend>
             <FormControl as='textarea' aria-label='With textarea' />
           </InputGroup>
