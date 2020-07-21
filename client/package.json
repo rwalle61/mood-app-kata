@@ -17,8 +17,8 @@
     "start": "BROWSER=none react-scripts start",
     "open": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "test:once": "CI=true react-scripts test",
+    "test": "react-scripts test --env=jsdom-sixteen",
+    "test:once": "CI=true yarn test",
     "test:full": "yarn test:once --coverage",
     "eject": "react-scripts eject"
   },
@@ -38,6 +38,7 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/dom": "^7.20.2"
+    "@testing-library/dom": "^7.20.2",
+    "jest-environment-jsdom-sixteen": "^1.0.3"
   }
 }

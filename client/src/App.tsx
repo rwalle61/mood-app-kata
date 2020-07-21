@@ -12,9 +12,25 @@ const moods = {
   MAX: 7,
 };
 
+const feelings = {
+  DEPRESSED: 'depressed',
+  OPTIMISTIC: 'optimistic',
+  BORED: 'bored',
+  HAPPY: 'happy',
+};
+
+const defaultFeelings = [
+  feelings.DEPRESSED,
+  feelings.OPTIMISTIC,
+  feelings.BORED,
+  feelings.HAPPY,
+];
+
 interface CheckIn {
   date: string;
   mood: number;
+  feeling: string;
+  comment: string;
 }
 
 const sumArray = (array: number[]) =>
@@ -38,12 +54,23 @@ const getAverageMood = (checkIns: CheckIn[]) => {
 const App = (): JSX.Element => {
   const [checkIns, setCheckIns] = useState<CheckIn[]>([]);
   const [selectedMood, setSelectedMood] = useState(moods.MID);
+  const [selectedFeeling, setSelectedFeeling] = useState('');
+  const [currentComment, setCurrentComment] = useState('');
   const [averageMood, setAverageMood] = useState(0);
 
   const onCheckIn = () => {
-    const newCheckIns = [...checkIns, { date: Date(), mood: selectedMood }];
+    const newCheckIns = [
+      ...checkIns,
+      {
+        date: Date(),
+        mood: selectedMood,
+        feeling: selectedFeeling,
+        comment: currentComment,
+      },
+    ];
     setCheckIns(newCheckIns);
     setAverageMood(getAverageMood(newCheckIns));
+    setCurrentComment('');
   };
 
   return (
@@ -67,17 +94,30 @@ const App = (): JSX.Element => {
         </div>
         <div>
           <h2>I'm feeling:</h2>
-          <div>depressed</div>
-          <div>optimistic</div>
-          <div>bored</div>
-          <div>happy</div>
+          {defaultFeelings.map((feeling) => (
+            <Button
+              key={feeling}
+              onClick={() => {
+                setSelectedFeeling(feeling);
+              }}
+            >
+              {feeling}
+            </Button>
+          ))}
         </div>
         <div>
           <InputGroup>
             <InputGroup.Prepend>
               <InputGroup.Text>Comment?</InputGroup.Text>
             </InputGroup.Prepend>
-            <FormControl as='textarea' aria-label='With textarea' />
+            <FormControl
+              value={currentComment}
+              as='textarea'
+              aria-label='With textarea'
+              onChange={(e) => {
+                setCurrentComment(e.target.value);
+              }}
+            />
           </InputGroup>
         </div>
         <Button onClick={onCheckIn}>Submit</Button>
@@ -100,8 +140,8 @@ const App = (): JSX.Element => {
               <tr key={uuid()}>
                 <td>{checkIn.date}</td>
                 <td>{checkIn.mood}</td>
-                <td>happy</td>
-                <td>Yay</td>
+                <td>{checkIn.feeling}</td>
+                <td>{checkIn.comment}</td>
               </tr>
             ))}
           </tbody>
