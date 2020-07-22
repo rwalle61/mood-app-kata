@@ -60,7 +60,11 @@ describe('App - as a user', () => {
       expect(screen.getByText(labels.COMMENT)).toBeInTheDocument();
       expect(getCommentBox()).toBeInTheDocument();
     });
-    test('I see a button to check in my mood', () => {
+    test('I see a button to check in only after I select a feeling', () => {
+      expect(screen.queryByText(labels.SUBMIT)).toBeNull();
+
+      userEvent.click(getFeelingButton('happy'));
+
       expect(
         screen.getByText(labels.SUBMIT).closest('button'),
       ).toBeInTheDocument();
@@ -73,11 +77,13 @@ describe('App - as a user', () => {
   });
   describe('when I check in my mood', () => {
     test('I see the check-ins count increase', () => {
+      userEvent.click(getFeelingButton('happy'));
       userEvent.click(getCheckInButton());
 
       expect(screen.getByText('1 check-ins')).toBeInTheDocument();
     });
     test('I see my average mood matches what I submitted', () => {
+      userEvent.click(getFeelingButton('happy'));
       userEvent.click(getCheckInButton());
 
       expect(screen.getByText(`${labels.AVE_MOOD}: 4`)).toBeInTheDocument();
@@ -130,13 +136,17 @@ describe('App - as a user', () => {
   });
   describe('when I check in my mood twice', () => {
     test('I see the check-ins count increase twice', () => {
+      userEvent.click(getFeelingButton('happy'));
       userEvent.click(getCheckInButton());
+      userEvent.click(getFeelingButton('happy'));
       userEvent.click(getCheckInButton());
 
       expect(screen.getByText('2 check-ins')).toBeInTheDocument();
     });
     test('I see my average mood matches what I submitted those 2 times', () => {
+      userEvent.click(getFeelingButton('happy'));
       userEvent.click(getCheckInButton());
+      userEvent.click(getFeelingButton('happy'));
       fireEvent.change(getMoodSlider(), { target: { value: '2' } });
       userEvent.click(getCheckInButton());
 

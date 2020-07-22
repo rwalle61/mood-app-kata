@@ -64,15 +64,13 @@ const App = (): JSX.Element => {
   const [averageMood, setAverageMood] = useState(0);
 
   const onCheckIn = () => {
-    const newCheckIns = [
-      ...checkIns,
-      {
-        date: Date(),
-        mood: selectedMood,
-        feelings: selectedFeelings,
-        comment: currentComment,
-      },
-    ];
+    const newCheckIn = {
+      date: Date(),
+      mood: selectedMood,
+      feelings: selectedFeelings,
+      comment: currentComment,
+    };
+    const newCheckIns = [...checkIns, newCheckIn];
     setCheckIns(newCheckIns);
     setAverageMood(getAverageMood(newCheckIns));
     setCurrentComment('');
@@ -126,7 +124,9 @@ const App = (): JSX.Element => {
             />
           </InputGroup>
         </div>
-        <Button onClick={onCheckIn}>Submit</Button>
+        {selectedFeelings.length ? (
+          <Button onClick={onCheckIn}>Submit</Button>
+        ) : null}
       </div>
       <div>
         <h1>Mood Insights</h1>
