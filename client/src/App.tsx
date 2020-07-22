@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { uuid } from 'uuidv4';
 import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import ToggleButton from 'react-bootstrap/ToggleButton';
 import Table from 'react-bootstrap/Table';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
@@ -59,20 +61,32 @@ const getAverageMood = (checkIns: CheckIn[]) => {
 type FeelingButtonProps = {
   feeling: string;
   selectFeeling: (feeling: string) => void;
+  deselectFeeling: (feeling: string) => void;
 };
 
 const FeelingButton: React.FC<FeelingButtonProps> = ({
   feeling,
   selectFeeling,
+  deselectFeeling,
 }): JSX.Element => {
+  const [checked, setChecked] = useState(false);
+
+  const toggleSelectFeeling = checked ? deselectFeeling : selectFeeling;
+
   return (
-    <Button
-      onClick={() => {
-        selectFeeling(feeling);
-      }}
-    >
-      {feeling}
-    </Button>
+    <ButtonGroup toggle>
+      <ToggleButton
+        type='checkbox'
+        checked={checked}
+        value='foo'
+        onChange={(e) => {
+          toggleSelectFeeling(feeling);
+          setChecked(e.currentTarget.checked);
+        }}
+      >
+        {feeling}
+      </ToggleButton>
+    </ButtonGroup>
   );
 };
 
@@ -85,6 +99,12 @@ const App = (): JSX.Element => {
 
   const selectFeeling = (feeling: string) => {
     setSelectedFeelings(insertIfUnique(selectedFeelings, feeling));
+  };
+
+  const deselectFeeling = (feeling: string) => {
+    setSelectedFeelings(
+      selectedFeelings.filter((selectedFeeling) => selectedFeeling !== feeling),
+    );
   };
 
   const onCheckIn = () => {
@@ -127,6 +147,7 @@ const App = (): JSX.Element => {
               key={feeling}
               feeling={feeling}
               selectFeeling={selectFeeling}
+              deselectFeeling={deselectFeeling}
             >
               {feeling}
             </FeelingButton>

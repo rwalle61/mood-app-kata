@@ -69,6 +69,16 @@ describe('App - as a user', () => {
         screen.getByText(labels.SUBMIT).closest('button'),
       ).toBeInTheDocument();
     });
+    test("I can de-select how I'm feeling", () => {
+      userEvent.click(getFeelingButton('happy'));
+      expect(
+        screen.getByText(labels.SUBMIT).closest('button'),
+      ).toBeInTheDocument();
+
+      userEvent.click(getFeelingButton('happy'));
+
+      expect(screen.queryByText(labels.SUBMIT)).toBeNull();
+    });
     test('I see the Mood insights information', () => {
       expect(screen.getByText(labels.INSIGHTS)).toBeInTheDocument();
       expect(screen.getByText(labels.AVE_MOOD)).toBeInTheDocument();
@@ -125,20 +135,12 @@ describe('App - as a user', () => {
       const [, row1] = screen.getAllByRole('row');
       expect(within(row1).getByText('happy, optimistic')).toBeInTheDocument();
     });
-    test('I see check-ins without duplicate feelings', () => {
-      userEvent.click(getFeelingButton('happy'));
-      userEvent.click(getFeelingButton('happy'));
-      userEvent.click(getCheckInButton());
-
-      const [, row1] = screen.getAllByRole('row');
-      expect(within(row1).getByText('happy')).toBeInTheDocument();
-    });
   });
   describe('when I check in my mood twice', () => {
     test('I see the check-ins count increase twice', () => {
       userEvent.click(getFeelingButton('happy'));
       userEvent.click(getCheckInButton());
-      userEvent.click(getFeelingButton('happy'));
+      userEvent.click(getFeelingButton('optimistic'));
       userEvent.click(getCheckInButton());
 
       expect(screen.getByText('2 check-ins')).toBeInTheDocument();
@@ -146,7 +148,7 @@ describe('App - as a user', () => {
     test('I see my average mood matches what I submitted those 2 times', () => {
       userEvent.click(getFeelingButton('happy'));
       userEvent.click(getCheckInButton());
-      userEvent.click(getFeelingButton('happy'));
+      userEvent.click(getFeelingButton('optimistic'));
       fireEvent.change(getMoodSlider(), { target: { value: '2' } });
       userEvent.click(getCheckInButton());
 
