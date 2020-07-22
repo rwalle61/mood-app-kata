@@ -82,24 +82,22 @@ describe('App - as a user', () => {
       const commentSection = screen.getByText(labels.COMMENT).parentElement!
         .parentElement;
       const textBox = within(commentSection!).getByRole('textbox');
-      userEvent.type(textBox, 'yay');
+      userEvent.type(textBox, 'Comment 1');
       const checkInButton = screen.getByText(labels.SUBMIT);
       userEvent.click(checkInButton);
 
-      const [head, ...rows] = screen.getAllByRole('row');
+      const [head, row1] = screen.getAllByRole('row');
       expect(within(head).getByText('Date')).toBeInTheDocument();
       expect(within(head).getByText('Mood')).toBeInTheDocument();
-      expect(within(head).getByText('Feeling')).toBeInTheDocument();
+      expect(within(head).getByText('Feelings')).toBeInTheDocument();
       expect(within(head).getByText('Comment')).toBeInTheDocument();
 
-      expect(within(rows[0]).getByText(checkinDate)).toBeInTheDocument();
-      expect(within(rows[0]).getByText('4')).toBeInTheDocument();
-      expect(within(rows[0]).getByText('happy')).toBeInTheDocument();
-      expect(within(rows[0]).getByText('yay')).toBeInTheDocument();
+      expect(within(row1).getByText(checkinDate)).toBeInTheDocument();
+      expect(within(row1).getByText('4')).toBeInTheDocument();
+      expect(within(row1).getByText('happy')).toBeInTheDocument();
+      expect(within(row1).getByText('Comment 1')).toBeInTheDocument();
     });
     test('I see a different check-in I submitted', () => {
-      const checkinDate = Date();
-
       const feelingSelector = screen.getByText(labels.FEELING).parentElement;
       const feelingOptimisticButton = within(feelingSelector!).getByText(
         'optimistic',
@@ -115,16 +113,37 @@ describe('App - as a user', () => {
       const checkInButton = screen.getByText(labels.SUBMIT);
       userEvent.click(checkInButton);
 
-      const [head, ...rows] = screen.getAllByRole('row');
-      expect(within(head).getByText('Date')).toBeInTheDocument();
-      expect(within(head).getByText('Mood')).toBeInTheDocument();
-      expect(within(head).getByText('Feeling')).toBeInTheDocument();
-      expect(within(head).getByText('Comment')).toBeInTheDocument();
+      const [, row1] = screen.getAllByRole('row');
+      expect(within(row1).getByText('2')).toBeInTheDocument();
+      expect(within(row1).getByText('optimistic')).toBeInTheDocument();
+      expect(within(row1).getByText('Comment 2')).toBeInTheDocument();
+    });
+    test('I can see a check-in with multiple feelings', () => {
+      const feelingSelector = screen.getByText(labels.FEELING).parentElement;
+      const feelingHappyButton = within(feelingSelector!).getByText('happy');
+      const feelingOptimisticButton = within(feelingSelector!).getByText(
+        'optimistic',
+      );
+      const checkInButton = screen.getByText(labels.SUBMIT);
 
-      expect(within(rows[0]).getByText(checkinDate)).toBeInTheDocument();
-      expect(within(rows[0]).getByText('2')).toBeInTheDocument();
-      expect(within(rows[0]).getByText('optimistic')).toBeInTheDocument();
-      expect(within(rows[0]).getByText('Comment 2')).toBeInTheDocument();
+      userEvent.click(feelingHappyButton);
+      userEvent.click(feelingOptimisticButton);
+      userEvent.click(checkInButton);
+
+      const [, row1] = screen.getAllByRole('row');
+      expect(within(row1).getByText('happy, optimistic')).toBeInTheDocument();
+    });
+    test('I see check-ins without duplicate feelings', () => {
+      const feelingSelector = screen.getByText(labels.FEELING).parentElement;
+      const feelingHappyButton = within(feelingSelector!).getByText('happy');
+      const checkInButton = screen.getByText(labels.SUBMIT);
+
+      userEvent.click(feelingHappyButton);
+      userEvent.click(feelingHappyButton);
+      userEvent.click(checkInButton);
+
+      const [, row1] = screen.getAllByRole('row');
+      expect(within(row1).getByText('happy')).toBeInTheDocument();
     });
   });
   describe('when I check in my mood twice', () => {
@@ -146,25 +165,22 @@ describe('App - as a user', () => {
 
       expect(screen.getByText(`${labels.AVE_MOOD}: 3`)).toBeInTheDocument();
     });
-    test('I see the 2 check-ins I submit, ordered by most recent date', () => {
-      const checkinDate = Date();
-
+    test('I see the 2 check-ins I submit, ordered by most recently submitted', () => {
       const feelingSelector = screen.getByText(labels.FEELING).parentElement;
       const feelingHappyButton = within(feelingSelector!).getByText('happy');
       userEvent.click(feelingHappyButton);
       const commentSection = screen.getByText(labels.COMMENT).parentElement!
         .parentElement;
       const textBox = within(commentSection!).getByRole('textbox');
-      userEvent.type(textBox, 'Yay');
+      userEvent.type(textBox, 'Comment 1');
       const checkInButton = screen.getByText(labels.SUBMIT);
       userEvent.click(checkInButton);
 
-      const checkinDate2 = Date();
-      userEvent.click(feelingHappyButton);
       const moodSelector = screen.getByText(labels.MOOD).parentElement;
       const slider = within(moodSelector!).getByRole('slider');
       fireEvent.change(slider, { target: { value: '2' } });
-      const feelingOptimisticButton = within(feelingSelector!).getByText(
+      const feelingSelector2 = screen.getByText(labels.FEELING).parentElement;
+      const feelingOptimisticButton = within(feelingSelector2!).getByText(
         'optimistic',
       );
       userEvent.click(feelingOptimisticButton);
@@ -175,21 +191,14 @@ describe('App - as a user', () => {
       userEvent.type(textBox2, 'Comment 2');
       userEvent.click(checkInButton);
 
-      const [head, ...rows] = screen.getAllByRole('row');
-      expect(within(head).getByText('Date')).toBeInTheDocument();
-      expect(within(head).getByText('Mood')).toBeInTheDocument();
-      expect(within(head).getByText('Feeling')).toBeInTheDocument();
-      expect(within(head).getByText('Comment')).toBeInTheDocument();
+      const [, row1, row2] = screen.getAllByRole('row');
+      expect(within(row1).getByText('2')).toBeInTheDocument();
+      expect(within(row1).getByText('optimistic')).toBeInTheDocument();
+      expect(within(row1).getByText('Comment 2')).toBeInTheDocument();
 
-      expect(within(rows[0]).getByText(checkinDate2)).toBeInTheDocument();
-      expect(within(rows[0]).getByText('2')).toBeInTheDocument();
-      expect(within(rows[0]).getByText('optimistic')).toBeInTheDocument();
-      expect(within(rows[0]).getByText('Comment 2')).toBeInTheDocument();
-
-      expect(within(rows[1]).getByText(checkinDate)).toBeInTheDocument();
-      expect(within(rows[1]).getByText('4')).toBeInTheDocument();
-      expect(within(rows[1]).getByText('happy')).toBeInTheDocument();
-      expect(within(rows[1]).getByText('Yay')).toBeInTheDocument();
+      expect(within(row2).getByText('4')).toBeInTheDocument();
+      expect(within(row2).getByText('happy')).toBeInTheDocument();
+      expect(within(row2).getByText('Comment 1')).toBeInTheDocument();
     });
   });
 });

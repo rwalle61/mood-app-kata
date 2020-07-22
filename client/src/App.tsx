@@ -29,9 +29,14 @@ const defaultFeelings = [
 interface CheckIn {
   date: string;
   mood: number;
-  feeling: string;
+  feelings: string[];
   comment: string;
 }
+
+const insertIfUnique = (array: string[], element: string) =>
+  array.some((e) => e === element) ? array : [...array, element];
+
+const arrayToString = (array: string[]) => array.join(', ');
 
 const sumArray = (array: number[]) =>
   array.reduce((subTotal, element) => subTotal + element);
@@ -54,7 +59,7 @@ const getAverageMood = (checkIns: CheckIn[]) => {
 const App = (): JSX.Element => {
   const [checkIns, setCheckIns] = useState<CheckIn[]>([]);
   const [selectedMood, setSelectedMood] = useState(moods.MID);
-  const [selectedFeeling, setSelectedFeeling] = useState('');
+  const [selectedFeelings, setSelectedFeelings] = useState<string[]>([]);
   const [currentComment, setCurrentComment] = useState('');
   const [averageMood, setAverageMood] = useState(0);
 
@@ -64,13 +69,14 @@ const App = (): JSX.Element => {
       {
         date: Date(),
         mood: selectedMood,
-        feeling: selectedFeeling,
+        feelings: selectedFeelings,
         comment: currentComment,
       },
     ];
     setCheckIns(newCheckIns);
     setAverageMood(getAverageMood(newCheckIns));
     setCurrentComment('');
+    setSelectedFeelings([]);
   };
 
   return (
@@ -98,7 +104,7 @@ const App = (): JSX.Element => {
             <Button
               key={feeling}
               onClick={() => {
-                setSelectedFeeling(feeling);
+                setSelectedFeelings(insertIfUnique(selectedFeelings, feeling));
               }}
             >
               {feeling}
@@ -131,7 +137,7 @@ const App = (): JSX.Element => {
             <tr>
               <th>Date</th>
               <th>Mood</th>
-              <th>Feeling</th>
+              <th>Feelings</th>
               <th>Comment</th>
             </tr>
           </thead>
@@ -140,7 +146,7 @@ const App = (): JSX.Element => {
               <tr key={uuid()}>
                 <td>{checkIn.date}</td>
                 <td>{checkIn.mood}</td>
-                <td>{checkIn.feeling}</td>
+                <td>{arrayToString(checkIn.feelings)}</td>
                 <td>{checkIn.comment}</td>
               </tr>
             ))}
