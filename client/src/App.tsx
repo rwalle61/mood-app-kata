@@ -6,18 +6,18 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 
-const moods = {
-  MIN: 1,
-  MID: 4,
-  MAX: 7,
-};
+enum moods {
+  MIN = 1,
+  MID = 4,
+  MAX = 7,
+}
 
-const feelings = {
-  DEPRESSED: 'depressed',
-  OPTIMISTIC: 'optimistic',
-  BORED: 'bored',
-  HAPPY: 'happy',
-};
+enum feelings {
+  DEPRESSED = 'depressed',
+  OPTIMISTIC = 'optimistic',
+  BORED = 'bored',
+  HAPPY = 'happy',
+}
 
 const defaultFeelings = [
   feelings.DEPRESSED,
@@ -56,12 +56,36 @@ const getAverageMood = (checkIns: CheckIn[]) => {
   return averageArray(moods);
 };
 
+type FeelingButtonProps = {
+  feeling: string;
+  selectFeeling: (feeling: string) => void;
+};
+
+const FeelingButton: React.FC<FeelingButtonProps> = ({
+  feeling,
+  selectFeeling,
+}): JSX.Element => {
+  return (
+    <Button
+      onClick={() => {
+        selectFeeling(feeling);
+      }}
+    >
+      {feeling}
+    </Button>
+  );
+};
+
 const App = (): JSX.Element => {
   const [checkIns, setCheckIns] = useState<CheckIn[]>([]);
   const [selectedMood, setSelectedMood] = useState(moods.MID);
   const [selectedFeelings, setSelectedFeelings] = useState<string[]>([]);
   const [currentComment, setCurrentComment] = useState('');
   const [averageMood, setAverageMood] = useState(0);
+
+  const selectFeeling = (feeling: string) => {
+    setSelectedFeelings(insertIfUnique(selectedFeelings, feeling));
+  };
 
   const onCheckIn = () => {
     const newCheckIn = {
@@ -99,14 +123,13 @@ const App = (): JSX.Element => {
         <div>
           <h2>I'm feeling:</h2>
           {defaultFeelings.map((feeling) => (
-            <Button
+            <FeelingButton
               key={feeling}
-              onClick={() => {
-                setSelectedFeelings(insertIfUnique(selectedFeelings, feeling));
-              }}
+              feeling={feeling}
+              selectFeeling={selectFeeling}
             >
               {feeling}
-            </Button>
+            </FeelingButton>
           ))}
         </div>
         <div>
