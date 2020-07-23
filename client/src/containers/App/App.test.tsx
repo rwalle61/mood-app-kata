@@ -161,6 +161,12 @@ describe('App - as a user', () => {
         within(row1).getByText(`${feelings.HAPPY}, ${feelings.OPTIMISTIC}`),
       ).toBeInTheDocument();
     });
+    test('I see selected feelings de-select after I check them in', () => {
+      userEvent.click(getFeelingButton(feelings.HAPPY));
+      userEvent.click(getCheckInButton());
+
+      expect(getFeelingButton(feelings.HAPPY)).not.toHaveClass('active');
+    });
   });
   describe('when I check in my mood twice and view my mood insights', () => {
     test('I see the check-ins count increase twice', () => {

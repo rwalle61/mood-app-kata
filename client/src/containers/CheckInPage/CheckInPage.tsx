@@ -97,6 +97,7 @@ const CheckInPage: React.FC<CheckInPageProps> = ({ checkIns, setCheckIns }) => {
                   <FeelingButton
                     key={feeling}
                     feeling={feeling}
+                    selectedFeelings={selectedFeelings}
                     selectFeeling={selectFeeling}
                     deselectFeeling={deselectFeeling}
                   >
