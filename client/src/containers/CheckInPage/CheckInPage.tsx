@@ -75,7 +75,7 @@ const CheckInPage: React.FC<CheckInPageProps> = ({ checkIns, setCheckIns }) => {
     <div>
       <div>
         <Form>
-          <div>
+          <div className='m-4'>
             <Form.Group controlId='formBasicRange'>
               <FormLabel label='My mood' />
               <Form.Control
@@ -89,9 +89,9 @@ const CheckInPage: React.FC<CheckInPageProps> = ({ checkIns, setCheckIns }) => {
             </Form.Group>
           </div>
 
-          <div>
+          <div className='m-4'>
             <FormLabel label={"I'm feeling"} />
-            <Row>
+            <Row className='justify-content-center'>
               <ButtonGroup>
                 {defaultFeelings.map((feeling) => (
                   <FeelingButton
@@ -106,13 +106,12 @@ const CheckInPage: React.FC<CheckInPageProps> = ({ checkIns, setCheckIns }) => {
               </ButtonGroup>
             </Row>
           </div>
-          <div>
+          <div className='m-4'>
             <FormLabel label='Comment?' />
-            <InputGroup>
+            <InputGroup size='sm'>
               <FormControl
                 value={currentComment}
                 as='textarea'
-                aria-label='With textarea'
                 onChange={(e) => {
                   setCurrentComment(e.target.value);
                 }}
@@ -122,7 +121,9 @@ const CheckInPage: React.FC<CheckInPageProps> = ({ checkIns, setCheckIns }) => {
         </Form>
       </div>
       {selectedFeelings.length ? (
-        <Button onClick={onCheckIn}>Submit</Button>
+        <Row className='justify-content-center'>
+          <Button onClick={onCheckIn}>Submit</Button>
+        </Row>
       ) : null}
     </div>
   );
