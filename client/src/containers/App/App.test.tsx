@@ -41,6 +41,9 @@ describe('App - as a user', () => {
     test('I see the Check In title', () => {
       expect(screen.getByText(labels.CHECK_IN)).toBeInTheDocument();
     });
+    test("I don't see the Mood insights title (because there are no insights yet)", () => {
+      expect(screen.queryByText(labels.INSIGHTS)).toBeNull();
+    });
     test('I see a way to select my mood on a scale of 1-7', () => {
       const slider = getMoodSlider();
       expect(slider).toHaveAttribute('min', '1');
@@ -80,22 +83,25 @@ describe('App - as a user', () => {
 
       expect(screen.queryByText(labels.SUBMIT)).toBeNull();
     });
-    test('I can see my Mood Insights and hide the Check In page', () => {
-      expect(screen.getByText(labels.INSIGHTS)).toBeInTheDocument();
+  });
+  describe('when I check in my mood and view my mood insights', () => {
+    test('I can see Mood Insights and hide the Check In page', () => {
+      userEvent.click(getFeelingButton('happy'));
+      userEvent.click(getCheckInButton());
       userEvent.click(screen.getByText(labels.INSIGHTS));
-      expect(screen.getByText(labels.AVE_MOOD)).toBeInTheDocument();
-      expect(screen.getByText('0 check-ins')).toBeInTheDocument();
+
       expect(screen.queryByText(labels.FEELING)).toBeNull();
     });
     test('I can see my Mood Insights then return to the Check In page', () => {
+      userEvent.click(getFeelingButton('happy'));
+      userEvent.click(getCheckInButton());
       userEvent.click(screen.getByText(labels.INSIGHTS));
+
       userEvent.click(screen.getByText(labels.CHECK_IN));
 
       expect(screen.getByText(labels.FEELING)).toBeInTheDocument();
     });
-  });
-  describe('when I check in my mood and view my mood insights', () => {
-    test('I see the check-ins count increase', () => {
+    test('I see the check-ins count appear', () => {
       userEvent.click(getFeelingButton('happy'));
       userEvent.click(getCheckInButton());
       userEvent.click(screen.getByText(labels.INSIGHTS));
