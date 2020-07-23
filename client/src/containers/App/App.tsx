@@ -12,7 +12,7 @@ const App = (): JSX.Element => {
 
   return (
     <div>
-      {<NavBar page={page} setPage={setPage} checkIns={checkIns} />}
+      {<NavBar setPage={setPage} checkIns={checkIns} />}
       {page === pageTitles.CHECK_IN && (
         <CheckInPage checkIns={checkIns} setCheckIns={setCheckIns} />
       )}

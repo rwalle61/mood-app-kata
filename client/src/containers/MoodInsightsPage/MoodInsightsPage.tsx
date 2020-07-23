@@ -47,8 +47,8 @@ const MoodInsightsPage: React.FC<MoodInsightsPageProps> = ({ checkIns }) => {
   const averageMood = getAverageMood(checkIns);
   return (
     <div>
-      <h2>{`Average mood: ${averageMood}`}</h2>
-      <h2>{`${checkIns.length} check-ins`}</h2>
+      <h5>{`Average mood: ${averageMood}`}</h5>
+      <h5>{`${checkIns.length} check-ins`}</h5>
       <CheckInsTable checkIns={checkIns} />
     </div>
   );

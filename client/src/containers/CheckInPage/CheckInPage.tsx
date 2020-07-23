@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
@@ -21,11 +23,21 @@ enum feelings {
 }
 
 const defaultFeelings = [
-  feelings.DEPRESSED,
-  feelings.OPTIMISTIC,
-  feelings.BORED,
   feelings.HAPPY,
+  feelings.OPTIMISTIC,
+  feelings.DEPRESSED,
+  feelings.BORED,
 ];
+
+type FormLabelProps = {
+  label: string;
+};
+
+const FormLabel: React.FC<FormLabelProps> = ({ label }) => (
+  <Form.Label column='lg'>
+    <h5>{label}</h5>
+  </Form.Label>
+);
 
 type CheckInPageProps = {
   checkIns: CheckIns;
@@ -63,46 +75,51 @@ const CheckInPage: React.FC<CheckInPageProps> = ({ checkIns, setCheckIns }) => {
     <div>
       <div>
         <Form>
-          <Form.Group controlId='formBasicRange'>
-            <Form.Label>My mood</Form.Label>
-            <Form.Control
-              type='range'
-              min={1}
-              max={7}
-              onChange={(e) => {
-                setSelectedMood(parseInt(e.target.value, 10));
-              }}
-            />
-          </Form.Group>
+          <div>
+            <Form.Group controlId='formBasicRange'>
+              <FormLabel label='My mood' />
+              <Form.Control
+                type='range'
+                min={1}
+                max={7}
+                onChange={(e) => {
+                  setSelectedMood(parseInt(e.target.value, 10));
+                }}
+              />
+            </Form.Group>
+          </div>
+
+          <div>
+            <FormLabel label={"I'm feeling"} />
+            <Row>
+              <ButtonGroup>
+                {defaultFeelings.map((feeling) => (
+                  <FeelingButton
+                    key={feeling}
+                    feeling={feeling}
+                    selectFeeling={selectFeeling}
+                    deselectFeeling={deselectFeeling}
+                  >
+                    {feeling}
+                  </FeelingButton>
+                ))}
+              </ButtonGroup>
+            </Row>
+          </div>
+          <div>
+            <FormLabel label='Comment?' />
+            <InputGroup>
+              <FormControl
+                value={currentComment}
+                as='textarea'
+                aria-label='With textarea'
+                onChange={(e) => {
+                  setCurrentComment(e.target.value);
+                }}
+              />
+            </InputGroup>
+          </div>
         </Form>
-      </div>
-      <div>
-        <h2>I'm feeling:</h2>
-        {defaultFeelings.map((feeling) => (
-          <FeelingButton
-            key={feeling}
-            feeling={feeling}
-            selectFeeling={selectFeeling}
-            deselectFeeling={deselectFeeling}
-          >
-            {feeling}
-          </FeelingButton>
-        ))}
-      </div>
-      <div>
-        <InputGroup>
-          <InputGroup.Prepend>
-            <InputGroup.Text>Comment?</InputGroup.Text>
-          </InputGroup.Prepend>
-          <FormControl
-            value={currentComment}
-            as='textarea'
-            aria-label='With textarea'
-            onChange={(e) => {
-              setCurrentComment(e.target.value);
-            }}
-          />
-        </InputGroup>
       </div>
       {selectedFeelings.length ? (
         <Button onClick={onCheckIn}>Submit</Button>

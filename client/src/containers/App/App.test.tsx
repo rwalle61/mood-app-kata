@@ -7,7 +7,7 @@ import App from './App';
 const labels = {
   CHECK_IN: 'Check In',
   MOOD: 'My mood',
-  FEELING: "I'm feeling:",
+  FEELING: "I'm feeling",
   COMMENT: 'Comment?',
   INSIGHTS: 'Mood Insights',
   AVE_MOOD: 'Average mood',
@@ -16,20 +16,14 @@ const labels = {
 };
 
 const getFeelingButton = (matcher: string) => {
-  const feelingSelector = screen.getByText(labels.FEELING).parentElement;
+  const feelingSelector = screen.getByText(labels.FEELING).parentElement
+    .parentElement;
   return within(feelingSelector!).getByText(matcher);
 };
 
-const getMoodSlider = () => {
-  const moodSelector = screen.getByText(labels.MOOD).parentElement;
-  return within(moodSelector!).getByRole('slider');
-};
+const getMoodSlider = () => screen.getByRole('slider');
 
-const getCommentBox = () => {
-  const commentSection = screen.getByText(labels.COMMENT).parentElement!
-    .parentElement;
-  return within(commentSection!).getByRole('textbox');
-};
+const getCommentBox = () => screen.getByRole('textbox');
 
 const getCheckInButton = () => screen.getByText(labels.SUBMIT);
 
@@ -41,8 +35,13 @@ describe('App - as a user', () => {
     test('I see the Check In title', () => {
       expect(screen.getByText(labels.CHECK_IN)).toBeInTheDocument();
     });
-    test("I don't see the Mood insights title (because there are no insights yet)", () => {
-      expect(screen.queryByText(labels.INSIGHTS)).toBeNull();
+    test('I see the Mood Insights title link disabled (because there are no insights yet)', () => {
+      const insightsTitle = screen.getByText(labels.INSIGHTS);
+      expect(insightsTitle).toBeInTheDocument();
+      expect(insightsTitle.closest('a')).toHaveAttribute(
+        'aria-disabled',
+        'true',
+      );
     });
     test('I see a way to select my mood on a scale of 1-7', () => {
       const slider = getMoodSlider();

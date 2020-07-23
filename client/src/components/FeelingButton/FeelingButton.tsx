@@ -23,6 +23,7 @@ const FeelingButton: React.FC<FeelingButtonProps> = ({
         type='checkbox'
         checked={checked}
         value='foo'
+        variant={checked ? 'outline-primary' : 'link'}
         onChange={(e) => {
           toggleSelectFeeling(feeling);
           setChecked(e.currentTarget.checked);
