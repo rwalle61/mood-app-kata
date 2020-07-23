@@ -8,7 +8,6 @@ const labels = {
   CHECK_IN: 'Check In',
   MOOD: 'My mood',
   FEELING: "I'm feeling",
-  COMMENT: 'Comment?',
   INSIGHTS: 'Mood Insights',
   AVE_MOOD: 'Average mood',
   CHECK_INS: 'check-ins',
@@ -67,7 +66,6 @@ describe('App - as a user', () => {
       expect(getFeelingButton(feelings.HAPPY)).toBeInTheDocument();
     });
     test('I see a way to leave an optional comment', () => {
-      expect(screen.getByText(labels.COMMENT)).toBeInTheDocument();
       expect(getCommentBox()).toBeInTheDocument();
     });
     test('I see a button to check in only after I select a feeling', () => {

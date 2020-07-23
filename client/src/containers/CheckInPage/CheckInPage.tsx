@@ -107,11 +107,11 @@ const CheckInPage: React.FC<CheckInPageProps> = ({ checkIns, setCheckIns }) => {
             </Row>
           </div>
           <div className='m-4'>
-            <FormLabel label='Comment?' />
             <InputGroup size='sm'>
               <FormControl
                 value={currentComment}
                 as='textarea'
+                placeholder='Optional comment'
                 onChange={(e) => {
                   setCurrentComment(e.target.value);
                 }}
