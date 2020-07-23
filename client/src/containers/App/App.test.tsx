@@ -15,6 +15,13 @@ const labels = {
   SUBMIT: 'Submit',
 };
 
+enum feelings {
+  DEPRESSED = 'Depressed',
+  OPTIMISTIC = 'Optimistic',
+  BORED = 'Bored',
+  HAPPY = 'Happy',
+}
+
 const getFeelingButton = (matcher: string) => {
   const feelingSelector = screen.getByText(labels.FEELING).parentElement
     .parentElement;
@@ -54,10 +61,10 @@ describe('App - as a user', () => {
       expect(
         within(feelingSelector!).getByText(labels.FEELING),
       ).toBeInTheDocument();
-      expect(getFeelingButton('depressed')).toBeInTheDocument();
-      expect(getFeelingButton('optimistic')).toBeInTheDocument();
-      expect(getFeelingButton('bored')).toBeInTheDocument();
-      expect(getFeelingButton('happy')).toBeInTheDocument();
+      expect(getFeelingButton(feelings.DEPRESSED)).toBeInTheDocument();
+      expect(getFeelingButton(feelings.OPTIMISTIC)).toBeInTheDocument();
+      expect(getFeelingButton(feelings.BORED)).toBeInTheDocument();
+      expect(getFeelingButton(feelings.HAPPY)).toBeInTheDocument();
     });
     test('I see a way to leave an optional comment', () => {
       expect(screen.getByText(labels.COMMENT)).toBeInTheDocument();
@@ -66,33 +73,33 @@ describe('App - as a user', () => {
     test('I see a button to check in only after I select a feeling', () => {
       expect(screen.queryByText(labels.SUBMIT)).toBeNull();
 
-      userEvent.click(getFeelingButton('happy'));
+      userEvent.click(getFeelingButton(feelings.HAPPY));
 
       expect(
         screen.getByText(labels.SUBMIT).closest('button'),
       ).toBeInTheDocument();
     });
     test("I can de-select how I'm feeling", () => {
-      userEvent.click(getFeelingButton('happy'));
+      userEvent.click(getFeelingButton(feelings.HAPPY));
       expect(
         screen.getByText(labels.SUBMIT).closest('button'),
       ).toBeInTheDocument();
 
-      userEvent.click(getFeelingButton('happy'));
+      userEvent.click(getFeelingButton(feelings.HAPPY));
 
       expect(screen.queryByText(labels.SUBMIT)).toBeNull();
     });
   });
   describe('when I check in my mood and view my mood insights', () => {
     test('I can see Mood Insights and hide the Check In page', () => {
-      userEvent.click(getFeelingButton('happy'));
+      userEvent.click(getFeelingButton(feelings.HAPPY));
       userEvent.click(getCheckInButton());
       userEvent.click(screen.getByText(labels.INSIGHTS));
 
       expect(screen.queryByText(labels.FEELING)).toBeNull();
     });
     test('I can see my Mood Insights then return to the Check In page', () => {
-      userEvent.click(getFeelingButton('happy'));
+      userEvent.click(getFeelingButton(feelings.HAPPY));
       userEvent.click(getCheckInButton());
       userEvent.click(screen.getByText(labels.INSIGHTS));
 
@@ -101,14 +108,14 @@ describe('App - as a user', () => {
       expect(screen.getByText(labels.FEELING)).toBeInTheDocument();
     });
     test('I see the check-ins count appear', () => {
-      userEvent.click(getFeelingButton('happy'));
+      userEvent.click(getFeelingButton(feelings.HAPPY));
       userEvent.click(getCheckInButton());
       userEvent.click(screen.getByText(labels.INSIGHTS));
 
       expect(screen.getByText('1 check-ins')).toBeInTheDocument();
     });
     test('I see my average mood matches what I submitted', () => {
-      userEvent.click(getFeelingButton('happy'));
+      userEvent.click(getFeelingButton(feelings.HAPPY));
       userEvent.click(getCheckInButton());
       userEvent.click(screen.getByText(labels.INSIGHTS));
 
@@ -117,7 +124,7 @@ describe('App - as a user', () => {
     test('I see the check-in I submitted', async () => {
       const checkinDate = Date();
 
-      userEvent.click(getFeelingButton('happy'));
+      userEvent.click(getFeelingButton(feelings.HAPPY));
       userEvent.type(getCommentBox(), 'Comment 1');
       userEvent.click(getCheckInButton());
       userEvent.click(screen.getByText(labels.INSIGHTS));
@@ -130,11 +137,11 @@ describe('App - as a user', () => {
 
       expect(within(row1).getByText(checkinDate)).toBeInTheDocument();
       expect(within(row1).getByText('4')).toBeInTheDocument();
-      expect(within(row1).getByText('happy')).toBeInTheDocument();
+      expect(within(row1).getByText(feelings.HAPPY)).toBeInTheDocument();
       expect(within(row1).getByText('Comment 1')).toBeInTheDocument();
     });
     test('I see a different check-in I submitted', () => {
-      userEvent.click(getFeelingButton('optimistic'));
+      userEvent.click(getFeelingButton(feelings.OPTIMISTIC));
       fireEvent.change(getMoodSlider(), { target: { value: '2' } });
       userEvent.type(getCommentBox(), 'Comment 2');
       userEvent.click(getCheckInButton());
@@ -142,33 +149,35 @@ describe('App - as a user', () => {
 
       const [, row1] = screen.getAllByRole('row');
       expect(within(row1).getByText('2')).toBeInTheDocument();
-      expect(within(row1).getByText('optimistic')).toBeInTheDocument();
+      expect(within(row1).getByText(feelings.OPTIMISTIC)).toBeInTheDocument();
       expect(within(row1).getByText('Comment 2')).toBeInTheDocument();
     });
     test('I can see a check-in with multiple feelings', () => {
-      userEvent.click(getFeelingButton('happy'));
-      userEvent.click(getFeelingButton('optimistic'));
+      userEvent.click(getFeelingButton(feelings.HAPPY));
+      userEvent.click(getFeelingButton(feelings.OPTIMISTIC));
       userEvent.click(getCheckInButton());
       userEvent.click(screen.getByText(labels.INSIGHTS));
 
       const [, row1] = screen.getAllByRole('row');
-      expect(within(row1).getByText('happy, optimistic')).toBeInTheDocument();
+      expect(
+        within(row1).getByText(`${feelings.HAPPY}, ${feelings.OPTIMISTIC}`),
+      ).toBeInTheDocument();
     });
   });
   describe('when I check in my mood twice and view my mood insights', () => {
     test('I see the check-ins count increase twice', () => {
-      userEvent.click(getFeelingButton('happy'));
+      userEvent.click(getFeelingButton(feelings.HAPPY));
       userEvent.click(getCheckInButton());
-      userEvent.click(getFeelingButton('optimistic'));
+      userEvent.click(getFeelingButton(feelings.OPTIMISTIC));
       userEvent.click(getCheckInButton());
       userEvent.click(screen.getByText(labels.INSIGHTS));
 
       expect(screen.getByText('2 check-ins')).toBeInTheDocument();
     });
     test('I see my average mood matches what I submitted those 2 times', () => {
-      userEvent.click(getFeelingButton('happy'));
+      userEvent.click(getFeelingButton(feelings.HAPPY));
       userEvent.click(getCheckInButton());
-      userEvent.click(getFeelingButton('optimistic'));
+      userEvent.click(getFeelingButton(feelings.OPTIMISTIC));
       fireEvent.change(getMoodSlider(), { target: { value: '2' } });
       userEvent.click(getCheckInButton());
       userEvent.click(screen.getByText(labels.INSIGHTS));
@@ -176,12 +185,12 @@ describe('App - as a user', () => {
       expect(screen.getByText(`${labels.AVE_MOOD}: 3`)).toBeInTheDocument();
     });
     test('I see the 2 check-ins I submit, ordered by most recently submitted', () => {
-      userEvent.click(getFeelingButton('happy'));
+      userEvent.click(getFeelingButton(feelings.HAPPY));
       userEvent.type(getCommentBox(), 'Comment 1');
       userEvent.click(getCheckInButton());
 
       fireEvent.change(getMoodSlider(), { target: { value: '2' } });
-      userEvent.click(getFeelingButton('optimistic'));
+      userEvent.click(getFeelingButton(feelings.OPTIMISTIC));
       userEvent.type(getCommentBox(), 'Comment 2');
       userEvent.click(getCheckInButton());
 
@@ -189,11 +198,11 @@ describe('App - as a user', () => {
 
       const [, row1, row2] = screen.getAllByRole('row');
       expect(within(row1).getByText('2')).toBeInTheDocument();
-      expect(within(row1).getByText('optimistic')).toBeInTheDocument();
+      expect(within(row1).getByText(feelings.OPTIMISTIC)).toBeInTheDocument();
       expect(within(row1).getByText('Comment 2')).toBeInTheDocument();
 
       expect(within(row2).getByText('4')).toBeInTheDocument();
-      expect(within(row2).getByText('happy')).toBeInTheDocument();
+      expect(within(row2).getByText(feelings.HAPPY)).toBeInTheDocument();
       expect(within(row2).getByText('Comment 1')).toBeInTheDocument();
     });
   });

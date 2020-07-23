@@ -16,10 +16,10 @@ enum moods {
 }
 
 enum feelings {
-  DEPRESSED = 'depressed',
-  OPTIMISTIC = 'optimistic',
-  BORED = 'bored',
-  HAPPY = 'happy',
+  DEPRESSED = 'Depressed',
+  OPTIMISTIC = 'Optimistic',
+  BORED = 'Bored',
+  HAPPY = 'Happy',
 }
 
 const defaultFeelings = [
