@@ -20,7 +20,6 @@ const MoodInsightsPage: React.FC<MoodInsightsPageProps> = ({ checkIns }) => {
   const averageMood = getAverageMood(checkIns);
   return (
     <div>
-      <h1>Mood Insights</h1>
       <h2>{`Average mood${averageMood ? `: ${averageMood}` : ''}`}</h2>
       <h2>{`${checkIns.length} check-ins`}</h2>
       <Table striped bordered hover>

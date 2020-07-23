@@ -61,7 +61,6 @@ const CheckInPage: React.FC<CheckInPageProps> = ({ checkIns, setCheckIns }) => {
   };
   return (
     <div>
-      <h1>Check In</h1>
       <div>
         <Form>
           <Form.Group controlId='formBasicRange'>

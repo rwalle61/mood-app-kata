@@ -80,22 +80,32 @@ describe('App - as a user', () => {
 
       expect(screen.queryByText(labels.SUBMIT)).toBeNull();
     });
-    test('I see the Mood insights information', () => {
+    test('I can see my Mood Insights and hide the Check In page', () => {
       expect(screen.getByText(labels.INSIGHTS)).toBeInTheDocument();
+      userEvent.click(screen.getByText(labels.INSIGHTS));
       expect(screen.getByText(labels.AVE_MOOD)).toBeInTheDocument();
       expect(screen.getByText('0 check-ins')).toBeInTheDocument();
+      expect(screen.queryByText(labels.FEELING)).toBeNull();
+    });
+    test('I can see my Mood Insights then return to the Check In page', () => {
+      userEvent.click(screen.getByText(labels.INSIGHTS));
+      userEvent.click(screen.getByText(labels.CHECK_IN));
+
+      expect(screen.getByText(labels.FEELING)).toBeInTheDocument();
     });
   });
-  describe('when I check in my mood', () => {
+  describe('when I check in my mood and view my mood insights', () => {
     test('I see the check-ins count increase', () => {
       userEvent.click(getFeelingButton('happy'));
       userEvent.click(getCheckInButton());
+      userEvent.click(screen.getByText(labels.INSIGHTS));
 
       expect(screen.getByText('1 check-ins')).toBeInTheDocument();
     });
     test('I see my average mood matches what I submitted', () => {
       userEvent.click(getFeelingButton('happy'));
       userEvent.click(getCheckInButton());
+      userEvent.click(screen.getByText(labels.INSIGHTS));
 
       expect(screen.getByText(`${labels.AVE_MOOD}: 4`)).toBeInTheDocument();
     });
@@ -105,6 +115,7 @@ describe('App - as a user', () => {
       userEvent.click(getFeelingButton('happy'));
       userEvent.type(getCommentBox(), 'Comment 1');
       userEvent.click(getCheckInButton());
+      userEvent.click(screen.getByText(labels.INSIGHTS));
 
       const [head, row1] = screen.getAllByRole('row');
       expect(within(head).getByText('Date')).toBeInTheDocument();
@@ -122,6 +133,7 @@ describe('App - as a user', () => {
       fireEvent.change(getMoodSlider(), { target: { value: '2' } });
       userEvent.type(getCommentBox(), 'Comment 2');
       userEvent.click(getCheckInButton());
+      userEvent.click(screen.getByText(labels.INSIGHTS));
 
       const [, row1] = screen.getAllByRole('row');
       expect(within(row1).getByText('2')).toBeInTheDocument();
@@ -132,17 +144,19 @@ describe('App - as a user', () => {
       userEvent.click(getFeelingButton('happy'));
       userEvent.click(getFeelingButton('optimistic'));
       userEvent.click(getCheckInButton());
+      userEvent.click(screen.getByText(labels.INSIGHTS));
 
       const [, row1] = screen.getAllByRole('row');
       expect(within(row1).getByText('happy, optimistic')).toBeInTheDocument();
     });
   });
-  describe('when I check in my mood twice', () => {
+  describe('when I check in my mood twice and view my mood insights', () => {
     test('I see the check-ins count increase twice', () => {
       userEvent.click(getFeelingButton('happy'));
       userEvent.click(getCheckInButton());
       userEvent.click(getFeelingButton('optimistic'));
       userEvent.click(getCheckInButton());
+      userEvent.click(screen.getByText(labels.INSIGHTS));
 
       expect(screen.getByText('2 check-ins')).toBeInTheDocument();
     });
@@ -152,6 +166,7 @@ describe('App - as a user', () => {
       userEvent.click(getFeelingButton('optimistic'));
       fireEvent.change(getMoodSlider(), { target: { value: '2' } });
       userEvent.click(getCheckInButton());
+      userEvent.click(screen.getByText(labels.INSIGHTS));
 
       expect(screen.getByText(`${labels.AVE_MOOD}: 3`)).toBeInTheDocument();
     });
@@ -164,6 +179,8 @@ describe('App - as a user', () => {
       userEvent.click(getFeelingButton('optimistic'));
       userEvent.type(getCommentBox(), 'Comment 2');
       userEvent.click(getCheckInButton());
+
+      userEvent.click(screen.getByText(labels.INSIGHTS));
 
       const [, row1, row2] = screen.getAllByRole('row');
       expect(within(row1).getByText('2')).toBeInTheDocument();
