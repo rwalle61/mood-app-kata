@@ -115,7 +115,7 @@ describe('App - as a user', () => {
       expect(screen.getByText(`${Label.AverageMood}: 4`)).toBeInTheDocument();
     });
     test('I see the check-in I submitted', async () => {
-      const checkinDate = moment().format('dddd, D MMMM YYYY, h:mma');
+      const checkinDate = moment().format('D MMMM, h:mm a');
 
       userEvent.click(getFeelingButton(Feeling.Happy));
       userEvent.type(getCommentBox(), 'Comment 1');
@@ -123,7 +123,7 @@ describe('App - as a user', () => {
       userEvent.click(screen.getByText(Label.Insights));
 
       const [head, row1] = screen.getAllByRole('row');
-      expect(within(head).getByText('Date')).toBeInTheDocument();
+      expect(within(head).getByText('Date and Time')).toBeInTheDocument();
       expect(within(head).getByText('Mood')).toBeInTheDocument();
       expect(within(head).getByText('Feelings')).toBeInTheDocument();
       expect(within(head).getByText('Comment')).toBeInTheDocument();

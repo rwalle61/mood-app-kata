@@ -13,7 +13,7 @@ const CheckInsTable: React.FC<CheckInsTableProps> = ({ checkIns }) => (
   <Table striped bordered hover>
     <thead>
       <tr>
-        <th>Date</th>
+        <th>Date and Time</th>
         <th>Mood</th>
         <th>Feelings</th>
         <th>Comment</th>
@@ -22,7 +22,7 @@ const CheckInsTable: React.FC<CheckInsTableProps> = ({ checkIns }) => (
     <tbody>
       {reverseArray(checkIns).map((checkIn: CheckIn) => (
         <tr key={uuid()}>
-          <td>{moment(checkIn.date).format('dddd, D MMMM YYYY, h:mma')}</td>
+          <td>{moment(checkIn.date).format('D MMMM, h:mm a')}</td>
           <td>{checkIn.mood}</td>
           <td>{arrayToString(checkIn.feelings)}</td>
           <td>{checkIn.comment}</td>
