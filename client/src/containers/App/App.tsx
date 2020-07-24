@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import CheckInPage from '../CheckInPage';
-import MoodInsightsPage from '../MoodInsightsPage';
+import InsightsPage from '../InsightsPage';
 import NavBar from '../../components/NavBar';
 import { CheckIns } from '../../types/checkin';
 import { pageTitles } from '../../types/index';
@@ -17,7 +17,7 @@ const App = (): JSX.Element => {
         <CheckInPage checkIns={checkIns} setCheckIns={setCheckIns} />
       )}
       {page === pageTitles.MOOD_INSIGHTS && (
-        <MoodInsightsPage checkIns={checkIns} />
+        <InsightsPage checkIns={checkIns} />
       )}
     </div>
   );
