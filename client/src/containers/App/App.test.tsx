@@ -49,10 +49,11 @@ describe('App - as a user', () => {
         'true',
       );
     });
-    test('I see a way to select my mood on a scale of 1-7', () => {
+    test('I see a way to select my mood on a scale of 1-7, and a default of 4', () => {
       const slider = getMoodSlider();
       expect(slider).toHaveAttribute('min', '1');
       expect(slider).toHaveAttribute('max', '7');
+      expect(slider).toHaveValue('4');
     });
     test("I see a way to select how I'm feeling", () => {
       const feelingSelector = screen.getByText(labels.FEELING).parentElement;

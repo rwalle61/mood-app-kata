@@ -5,6 +5,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
+import RangeSlider from 'react-bootstrap-range-slider';
 import { insertIfUnique } from '../../utils';
 import { CheckIns } from '../../types/checkin';
 import FeelingButton from '../../components/FeelingButton';
@@ -78,11 +79,12 @@ const CheckInPage: React.FC<CheckInPageProps> = ({ checkIns, setCheckIns }) => {
           <div className='m-4'>
             <Form.Group controlId='formBasicRange'>
               <FormLabel label='My mood' />
-              <Form.Control
-                type='range'
+              <RangeSlider
                 min={1}
                 max={7}
-                onChange={(e) => {
+                tooltip='auto'
+                value={selectedMood}
+                onChange={(e: any) => {
                   setSelectedMood(parseInt(e.target.value, 10));
                 }}
               />
