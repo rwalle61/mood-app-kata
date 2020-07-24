@@ -1,5 +1,6 @@
 import React from 'react';
 import { uuid } from 'uuidv4';
+import moment from 'moment';
 import Table from 'react-bootstrap/Table';
 import { reverseArray, arrayToString, averageArray } from '../../utils';
 import { CheckIn, CheckIns } from '../../types/checkin';
@@ -29,7 +30,7 @@ const CheckInsTable: React.FC<CheckInsTableProps> = ({ checkIns }) => (
     <tbody>
       {reverseArray(checkIns).map((checkIn: CheckIn) => (
         <tr key={uuid()}>
-          <td>{checkIn.date}</td>
+          <td>{moment(checkIn.date).format('dddd, D MMMM YYYY, h:mma')}</td>
           <td>{checkIn.mood}</td>
           <td>{arrayToString(checkIn.feelings)}</td>
           <td>{checkIn.comment}</td>

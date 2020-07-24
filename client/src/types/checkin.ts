@@ -1,5 +1,5 @@
 export interface CheckIn {
-  date: string;
+  date: Date;
   mood: number;
   feelings: string[];
   comment: string;

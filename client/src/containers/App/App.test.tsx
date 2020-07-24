@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import { render, screen, within, fireEvent } from '@testing-library/react';
@@ -121,7 +122,7 @@ describe('App - as a user', () => {
       expect(screen.getByText(`${labels.AVE_MOOD}: 4`)).toBeInTheDocument();
     });
     test('I see the check-in I submitted', async () => {
-      const checkinDate = Date();
+      const checkinDate = moment().format('dddd, D MMMM YYYY, h:mma');
 
       userEvent.click(getFeelingButton(feelings.HAPPY));
       userEvent.type(getCommentBox(), 'Comment 1');

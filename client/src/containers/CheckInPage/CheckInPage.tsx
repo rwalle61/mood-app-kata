@@ -62,7 +62,7 @@ const CheckInPage: React.FC<CheckInPageProps> = ({ checkIns, setCheckIns }) => {
 
   const onCheckIn = () => {
     const newCheckIn = {
-      date: Date(),
+      date: new Date(),
       mood: selectedMood,
       feelings: selectedFeelings,
       comment: currentComment,
