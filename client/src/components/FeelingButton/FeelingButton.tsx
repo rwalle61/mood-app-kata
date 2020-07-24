@@ -1,12 +1,13 @@
 import React from 'react';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
+import { Feeling } from '../../types';
 
 type FeelingButtonProps = {
-  feeling: string;
-  selectedFeelings: string[];
-  selectFeeling: (feeling: string) => void;
-  deselectFeeling: (feeling: string) => void;
+  feeling: Feeling;
+  selectedFeelings: Feeling[];
+  selectFeeling: (feeling: Feeling) => void;
+  deselectFeeling: (feeling: Feeling) => void;
 };
 
 const FeelingButton: React.FC<FeelingButtonProps> = ({

@@ -1,7 +1,6 @@
 import React from 'react';
 import Nav from 'react-bootstrap/Nav';
-import { pageTitles } from '../../types/index';
-import { CheckIns } from '../../types/checkin';
+import { CheckIns, PageTitle } from '../../types';
 
 type NavItemProps = {
   pageTitle: string;
@@ -32,15 +31,11 @@ const NavBar: React.FC<NavBarProps> = ({ setPage, checkIns }) => (
     justify
     className='justify-content-center'
     variant='pills'
-    defaultActiveKey={pageTitles.CHECK_IN}
+    defaultActiveKey={PageTitle.CheckIn}
   >
+    <NavItem pageTitle={PageTitle.CheckIn} setPage={setPage} disabled={false} />
     <NavItem
-      pageTitle={pageTitles.CHECK_IN}
-      setPage={setPage}
-      disabled={false}
-    />
-    <NavItem
-      pageTitle={pageTitles.MOOD_INSIGHTS}
+      pageTitle={PageTitle.Insights}
       setPage={setPage}
       disabled={!checkIns.length}
     />

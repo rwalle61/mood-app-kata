@@ -3,7 +3,7 @@ import { uuid } from 'uuidv4';
 import moment from 'moment';
 import Table from 'react-bootstrap/Table';
 import { reverseArray, arrayToString } from '../../utils';
-import { CheckIn, CheckIns } from '../../types/checkin';
+import { CheckIn, CheckIns } from '../../types';
 
 type CheckInsTableProps = {
   checkIns: CheckIns;

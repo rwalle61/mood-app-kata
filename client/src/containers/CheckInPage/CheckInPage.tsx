@@ -7,27 +7,20 @@ import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 import RangeSlider from 'react-bootstrap-range-slider';
 import { insertIfUnique } from '../../utils';
-import { CheckIns } from '../../types/checkin';
+import { Feeling, CheckIns } from '../../types';
 import FeelingButton from '../../components/FeelingButton';
 
-enum moods {
-  MIN = 1,
-  MID = 4,
-  MAX = 7,
-}
-
-enum feelings {
-  DEPRESSED = 'Depressed',
-  OPTIMISTIC = 'Optimistic',
-  BORED = 'Bored',
-  HAPPY = 'Happy',
+enum Mood {
+  Min = 1,
+  Mid = 4,
+  Max = 7,
 }
 
 const defaultFeelings = [
-  feelings.HAPPY,
-  feelings.OPTIMISTIC,
-  feelings.DEPRESSED,
-  feelings.BORED,
+  Feeling.Happy,
+  Feeling.Optimistic,
+  Feeling.Depressed,
+  Feeling.Bored,
 ];
 
 type FormLabelProps = {
@@ -46,15 +39,15 @@ type CheckInPageProps = {
 };
 
 const CheckInPage: React.FC<CheckInPageProps> = ({ checkIns, setCheckIns }) => {
-  const [selectedMood, setSelectedMood] = useState(moods.MID);
-  const [selectedFeelings, setSelectedFeelings] = useState<string[]>([]);
+  const [selectedMood, setSelectedMood] = useState(Mood.Mid);
+  const [selectedFeelings, setSelectedFeelings] = useState<Feeling[]>([]);
   const [currentComment, setCurrentComment] = useState('');
 
-  const selectFeeling = (feeling: string) => {
+  const selectFeeling = (feeling: Feeling) => {
     setSelectedFeelings(insertIfUnique(selectedFeelings, feeling));
   };
 
-  const deselectFeeling = (feeling: string) => {
+  const deselectFeeling = (feeling: Feeling) => {
     setSelectedFeelings(
       selectedFeelings.filter((selectedFeeling) => selectedFeeling !== feeling),
     );
@@ -80,8 +73,8 @@ const CheckInPage: React.FC<CheckInPageProps> = ({ checkIns, setCheckIns }) => {
             <Form.Group controlId='formBasicRange'>
               <FormLabel label='My mood' />
               <RangeSlider
-                min={1}
-                max={7}
+                min={Mood.Min}
+                max={Mood.Max}
                 tooltip='auto'
                 value={selectedMood}
                 onChange={(e: any) => {

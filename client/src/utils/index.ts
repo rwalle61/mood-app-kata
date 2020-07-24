@@ -1,4 +1,4 @@
-export const insertIfUnique = (array: string[], element: string) =>
+export const insertIfUnique = <T>(array: T[], element: T) =>
   array.some((e) => e === element) ? array : [...array, element];
 
 export const arrayToString = (array: string[]) => array.join(', ');

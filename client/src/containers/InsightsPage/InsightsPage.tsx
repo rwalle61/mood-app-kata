@@ -1,6 +1,6 @@
 import React from 'react';
 import { averageArray } from '../../utils';
-import { CheckIns } from '../../types/checkin';
+import { CheckIns } from '../../types';
 import CheckInsTable from '../../components/CheckInsTable';
 
 const getAverageMood = (checkIns: CheckIns) => {
