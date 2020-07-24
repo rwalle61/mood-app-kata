@@ -1,4 +1,6 @@
-# Node React Starter App
+# Mood Monitor Kata
+
+Try it out at https://moodmonitor.netlify.app
 
 ## Table of Contents
 
@@ -9,15 +11,9 @@
 
 ## Overview
 
-This is a starter web app I've put together from what I think is currently a good setup.
+This is a simple ReactJS front-end that allows a user to check-in with how they are feeling, and view their history.
 
-- Node.js backend
-- React frontend
-- Integration, component and unit tests setup
-- OpenAPI 3 spec
-- Eslint
-- VSCode debugger
-- Husky git hooks
+I originally included a server and Cypress because I intended to store the health data in the backend. I may implement that if I have time.
 
 ## Getting Started
 
