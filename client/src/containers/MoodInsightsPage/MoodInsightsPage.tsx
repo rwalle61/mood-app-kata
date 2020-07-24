@@ -49,7 +49,9 @@ const MoodInsightsPage: React.FC<MoodInsightsPageProps> = ({ checkIns }) => {
   return (
     <div>
       <h5 className='m-4'>{`Average mood: ${averageMood}`}</h5>
-      <h5 className='m-4'>{`${checkIns.length} check-ins`}</h5>
+      <h5 className='m-4'>{`${checkIns.length} check-in${
+        checkIns.length > 1 ? 's' : ''
+      }`}</h5>
       <div className='m-4'>
         <CheckInsTable checkIns={checkIns} />
       </div>

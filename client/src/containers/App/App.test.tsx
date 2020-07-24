@@ -112,7 +112,7 @@ describe('App - as a user', () => {
       userEvent.click(getCheckInButton());
       userEvent.click(screen.getByText(labels.INSIGHTS));
 
-      expect(screen.getByText('1 check-ins')).toBeInTheDocument();
+      expect(screen.getByText('1 check-in')).toBeInTheDocument();
     });
     test('I see my average mood matches what I submitted', () => {
       userEvent.click(getFeelingButton(feelings.HAPPY));
