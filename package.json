@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Sample app",
   "scripts": {
-    "postinstall": "(cd server && yarn install) && (cd client && yarn install)",
+    "postinstall": "(cd server && yarn install) && (cd client && yarn install) && (cypress install)",
     "start": "(cd server && yarn start)",
     "start:dev": "concurrently --kill-others-on-fail \"cd server && yarn nodemon\" \"cd client && npm start\"",
     "test": "(cd server && yarn test:once) && (cd client && yarn test:once)",
