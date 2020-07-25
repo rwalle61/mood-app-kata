@@ -16,7 +16,7 @@ enum Label {
 }
 
 const getFeelingButton = (matcher: string) => {
-  const feelingSelector = screen.getByText(Label.Feeling).parentElement
+  const feelingSelector = screen.getByText(Label.Feeling).parentElement!
     .parentElement;
   return within(feelingSelector!).getByText(matcher);
 };
