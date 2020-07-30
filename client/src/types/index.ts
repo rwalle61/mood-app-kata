@@ -13,7 +13,7 @@ export enum Feeling {
 export interface CheckIn {
   date: Date;
   mood: number;
-  feelings: string[];
+  feelings: Feeling[];
   comment: string;
 }
 

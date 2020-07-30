@@ -1,9 +1,9 @@
 import express from 'express';
 
-import persons from './persons.route';
+import checkIns from './checkins.route';
 
 const router = express.Router();
 
-router.use('/persons', persons);
+router.use('/checkins', checkIns);
 
 export default router;
