@@ -9,7 +9,7 @@ import RangeSlider from 'react-bootstrap-range-slider';
 import { insertIfUnique } from '../../utils';
 import { Feeling } from '../../types';
 import FeelingButton from '../../components/FeelingButton';
-import { addCheckIn } from '../../utils/apiroutes';
+import { useAddCheckIn } from '../../hooks';
 
 enum Mood {
   Min = 1,
@@ -34,13 +34,7 @@ const FormLabel: React.FC<FormLabelProps> = ({ label }) => (
   </Form.Label>
 );
 
-type CheckInPageProps = {
-  // checkIns: CheckIns;
-  // setCheckIns: (checkIns: CheckIns) => void;
-};
-
-// const CheckInPage: React.FC<CheckInPageProps> = ({ checkIns, setCheckIns }) => {
-const CheckInPage: React.FC<CheckInPageProps> = () => {
+const CheckInPage: React.FC = () => {
   const [selectedMood, setSelectedMood] = useState(Mood.Mid);
   const [selectedFeelings, setSelectedFeelings] = useState<Feeling[]>([]);
   const [currentComment, setCurrentComment] = useState('');
@@ -55,6 +49,8 @@ const CheckInPage: React.FC<CheckInPageProps> = () => {
     );
   };
 
+  const [mutateCheckIns] = useAddCheckIn();
+
   const onCheckIn = async () => {
     const newCheckIn = {
       date: new Date(),
@@ -62,9 +58,7 @@ const CheckInPage: React.FC<CheckInPageProps> = () => {
       feelings: selectedFeelings,
       comment: currentComment,
     };
-    await addCheckIn(newCheckIn);
-    // const newCheckIns = [...checkIns, newCheckIn];
-    // setCheckIns(newCheckIns);
+    await mutateCheckIns(newCheckIn);
     setCurrentComment('');
     setSelectedFeelings([]);
   };

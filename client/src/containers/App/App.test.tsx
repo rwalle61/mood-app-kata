@@ -3,6 +3,7 @@ import moment from 'moment';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import { render, screen, within, fireEvent } from '@testing-library/react';
+import { waitFor } from '@testing-library/dom';
 import App from './App';
 import { Feeling } from '../../types';
 
@@ -32,9 +33,6 @@ describe('App - as a user', () => {
     render(<App />);
   });
   describe('when I load the page', () => {
-    test('I see the Check In title', async () => {
-      expect(await screen.findByText(Label.CheckIn)).toBeInTheDocument();
-    });
     test('I see the Check In title', async () => {
       expect(await screen.findByText(Label.CheckIn)).toBeInTheDocument();
     });
@@ -94,7 +92,13 @@ describe('App - as a user', () => {
     test('I can see Mood Insights and hide the Check In page', async () => {
       userEvent.click(await getFeelingButton(Feeling.Happy));
       userEvent.click(await getCheckInButton());
-      userEvent.click(await screen.findByText(Label.Insights));
+
+      await waitFor(() =>
+        expect(
+          screen.getByText(Label.Insights).closest('a'),
+        ).not.toHaveAttribute('aria-disabled'),
+      );
+      userEvent.click(screen.getByText(Label.Insights));
 
       expect(screen.queryByText(Label.Feeling)).toBeNull();
     });

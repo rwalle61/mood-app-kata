@@ -1,35 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import CheckInPage from '../CheckInPage';
 import InsightsPage from '../InsightsPage';
 import NavBar from '../../components/NavBar';
-import { CheckIns, PageTitle } from '../../types';
-import { getCheckIns } from '../../utils/apiroutes';
+import { PageTitle } from '../../types';
+import { useCheckIns } from '../../hooks';
 
 const App = (): JSX.Element => {
-  const [checkIns, setCheckIns] = useState<CheckIns>([]);
   const [page, setPage] = useState<string>(PageTitle.CheckIn);
 
-  useEffect(() => {
-    let mounted = true;
+  const { isLoading, error, data: checkIns } = useCheckIns();
 
-    const fetchCheckIns = async () => {
-      const checkIns = await getCheckIns();
-      if (mounted) {
-        setCheckIns(checkIns);
-      }
-    };
-    fetchCheckIns();
+  if (isLoading) return <div>"Loading..."</div>;
 
-    return () => {
-      mounted = false;
-    };
-  });
+  if (error) return <div>{`An error has occurred: ${error.message}`}</div>;
 
   return (
     <div>
-      {<NavBar setPage={setPage} checkIns={checkIns} />}
+      {<NavBar setPage={setPage} checkIns={checkIns!} />}
       {page === PageTitle.CheckIn && <CheckInPage />}
-      {page === PageTitle.Insights && <InsightsPage checkIns={checkIns} />}
+      {page === PageTitle.Insights && <InsightsPage checkIns={checkIns!} />}
     </div>
   );
 };
